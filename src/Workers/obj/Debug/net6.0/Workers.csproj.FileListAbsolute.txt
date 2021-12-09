@@ -1,0 +1,12 @@
+/home/gustavo/Documentos/dn_project/src/Workers/bin/Debug/net6.0/Workers.deps.json
+/home/gustavo/Documentos/dn_project/src/Workers/bin/Debug/net6.0/Workers.dll
+/home/gustavo/Documentos/dn_project/src/Workers/bin/Debug/net6.0/ref/Workers.dll
+/home/gustavo/Documentos/dn_project/src/Workers/bin/Debug/net6.0/Workers.pdb
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.csproj.AssemblyReference.cache
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.GeneratedMSBuildEditorConfig.editorconfig
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.AssemblyInfoInputs.cache
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.AssemblyInfo.cs
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.csproj.CoreCompileInputs.cache
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.dll
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/ref/Workers.dll
+/home/gustavo/Documentos/dn_project/src/Workers/obj/Debug/net6.0/Workers.pdb
