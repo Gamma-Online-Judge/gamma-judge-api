@@ -15,6 +15,6 @@ public class Worker : BaseSqsWorker<MessageShape>
     protected override async Task<SqsMessageReturn> ProcessMessage(MessageShape message, CancellationToken cancellationToken)
     {
         await Task.Delay(1000, cancellationToken);
-        return SqsMessageReturn.Failure;
+        return SqsMessageReturn.Success;
     }
 }

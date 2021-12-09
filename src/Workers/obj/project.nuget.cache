@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1Ltr2vwiKP3h3tWvvelrjNFW4C/U9Otyt0FH7aYV6PwjsgzgZfM4RUOD7pZ53pNuKmcUohUDUqPCCE5zEsskRA==",
+  "dgSpecHash": "dPuKPemm+2iYFv7vONrXYaM7IaT1xVpfOiZNtPuLyzAibeEfP1juRxJoiNgR8FDpk2YAg+4dzDAPv4K44NEW8Q==",
   "success": true,
-  "projectFilePath": "/home/gustavo/Documentos/dn_project/src/Workers/Workers.csproj",
+  "projectFilePath": "/home/gustavo/Documentos/tcc/dn_project/src/Workers/Workers.csproj",
   "expectedPackageFiles": [
     "/root/.nuget/packages/awssdk.core/3.7.5.5/awssdk.core.3.7.5.5.nupkg.sha512",
     "/root/.nuget/packages/awssdk.extensions.netcore.setup/3.7.1/awssdk.extensions.netcore.setup.3.7.1.nupkg.sha512",
