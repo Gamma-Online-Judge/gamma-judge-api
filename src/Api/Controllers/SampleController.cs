@@ -1,4 +1,6 @@
+using Amazon.SQS.Model;
 using Api.Models;
+using Infrastructure.SqsService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -8,21 +10,20 @@ namespace Api.Controllers;
 public class SampleController : ControllerBase
 {
     private readonly ILogger<SampleController> _logger;
+    private readonly ISqsService _sqsService;
 
-    public SampleController(ILogger<SampleController> logger)
+    public SampleController(ILogger<SampleController> logger, ISqsService sqsService)
     {
         _logger = logger;
+        _sqsService = sqsService;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
     [Route("post")]
 
-    public SampleResponse SamplePost([FromBodyAttribute] SampleRequest request)
+    public async Task<SendMessageResponse> SamplePost([FromBodyAttribute] SampleRequest request, CancellationToken cancellationToken)
     {
-        return new SampleResponse
-        {
-            Atribute1 = request.Atribute1,
-            Atribute2 = request.Atribute2,
-        };
+        
+        return await _sqsService.EnqueueAsync(request, cancellationToken);
     }
 }

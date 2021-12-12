@@ -64,3 +64,5 @@
 /home/gustavo/Documentos/tcc/dn_project/src/Api/obj/Debug/net6.0/ref/Api.dll
 /home/gustavo/Documentos/tcc/dn_project/src/Api/obj/Debug/net6.0/Api.pdb
 /home/gustavo/Documentos/tcc/dn_project/src/Api/obj/Debug/net6.0/Api.genruntimeconfig.cache
+/home/gustavo/Documentos/tcc/dn_project/src/Api/bin/Debug/net6.0/Infrastructure.dll
+/home/gustavo/Documentos/tcc/dn_project/src/Api/bin/Debug/net6.0/Infrastructure.pdb

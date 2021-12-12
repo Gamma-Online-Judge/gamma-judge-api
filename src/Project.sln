@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workers", "Workers\Workers.csproj", "{B4C132B4-6BAA-4C0F-9FCA-720F77967D99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{1A475C4D-0079-4181-AE3F-D9367F3A77D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B4C132B4-6BAA-4C0F-9FCA-720F77967D99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C132B4-6BAA-4C0F-9FCA-720F77967D99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C132B4-6BAA-4C0F-9FCA-720F77967D99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A475C4D-0079-4181-AE3F-D9367F3A77D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A475C4D-0079-4181-AE3F-D9367F3A77D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A475C4D-0079-4181-AE3F-D9367F3A77D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A475C4D-0079-4181-AE3F-D9367F3A77D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

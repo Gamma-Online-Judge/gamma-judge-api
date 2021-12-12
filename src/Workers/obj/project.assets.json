@@ -1377,9 +1377,15 @@
       "packagesPath": "/root/.nuget/packages/",
       "outputPath": "/home/gustavo/Documentos/tcc/dn_project/src/Workers/obj/",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/root/.nuget/NuGet/NuGet.Config"
+      ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",

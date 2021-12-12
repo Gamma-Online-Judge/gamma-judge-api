@@ -604,6 +604,19 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
+      "Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AWSSDK.SQS": "3.7.2.3"
+        },
+        "compile": {
+          "bin/placeholder/Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Infrastructure.dll": {}
+        }
+      },
       "Workers/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1568,6 +1581,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../Infrastructure/Infrastructure.csproj",
+      "msbuildProject": "../Infrastructure/Infrastructure.csproj"
+    },
     "Workers/1.0.0": {
       "type": "project",
       "path": "../Workers/Workers.csproj",
@@ -1577,6 +1595,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "AWSSDK.Extensions.NETCore.Setup >= 3.7.1",
+      "Infrastructure >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3",
       "Workers >= 1.0.0"
     ]
@@ -1593,13 +1612,22 @@
       "packagesPath": "/root/.nuget/packages/",
       "outputPath": "/home/gustavo/Documentos/tcc/dn_project/src/Api/obj/",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/root/.nuget/NuGet/NuGet.Config"
+      ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "/home/gustavo/Documentos/tcc/dn_project/src/Infrastructure/Infrastructure.csproj": {
+              "projectPath": "/home/gustavo/Documentos/tcc/dn_project/src/Infrastructure/Infrastructure.csproj"
+            },
             "/home/gustavo/Documentos/tcc/dn_project/src/Workers/Workers.csproj": {
               "projectPath": "/home/gustavo/Documentos/tcc/dn_project/src/Workers/Workers.csproj"
             }

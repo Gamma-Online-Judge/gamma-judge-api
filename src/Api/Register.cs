@@ -1,3 +1,4 @@
+using Infrastructure.SqsService;
 using Workers;
 
 namespace Api;
@@ -10,6 +11,10 @@ public static class Register
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        
+        // Infrastructure
+        services.AddSingleton<ISqsService, SqsService>();
+        
         services.AddWorkers(configuration);
         return services;
     }
