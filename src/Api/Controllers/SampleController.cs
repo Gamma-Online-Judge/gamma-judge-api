@@ -1,5 +1,6 @@
 using Amazon.SQS.Model;
 using Api.Models;
+using Infrastructure.S3Service;
 using Infrastructure.SqsService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,19 +12,20 @@ public class SampleController : ControllerBase
 {
     private readonly ILogger<SampleController> _logger;
     private readonly ISqsService _sqsService;
+    private readonly IS3Service _s3Service;
 
-    public SampleController(ILogger<SampleController> logger, ISqsService sqsService)
+    public SampleController(ILogger<SampleController> logger, ISqsService sqsService, IS3Service s3Service)
     {
         _logger = logger;
         _sqsService = sqsService;
+        _s3Service = s3Service;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    [Route("post")]
+    [HttpGet]
+    [Route("")]
 
-    public async Task<SendMessageResponse> SamplePost([FromBodyAttribute] SampleRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> SamplePost(CancellationToken cancellationToken)
     {
-        
-        return await _sqsService.EnqueueAsync(request, cancellationToken);
+        return Ok(await _s3Service.ListObjects("", cancellationToken));
     }
 }

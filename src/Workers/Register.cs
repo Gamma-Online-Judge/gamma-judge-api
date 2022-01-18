@@ -1,6 +1,3 @@
-using Amazon.Extensions.NETCore.Setup;
-using Amazon.S3;
-using Amazon.SQS;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +9,6 @@ public static class Register
     {
         var config = configuration.GetAWSOptions();
         services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-        services.AddAWSService<IAmazonSQS>();
         services.AddHostedService<Worker>();
     }
     

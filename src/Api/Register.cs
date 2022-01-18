@@ -1,3 +1,6 @@
+using Amazon.S3;
+using Amazon.SQS;
+using Infrastructure.S3Service;
 using Infrastructure.SqsService;
 using Workers;
 
@@ -12,7 +15,12 @@ public static class Register
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         
+        //AWS services
+        services.AddAWSService<IAmazonS3>();
+        services.AddAWSService<IAmazonSQS>();
+
         // Infrastructure
+        services.AddSingleton<IS3Service, S3Service>();
         services.AddSingleton<ISqsService, SqsService>();
         
         services.AddWorkers(configuration);
