@@ -2,14 +2,17 @@ using Amazon.S3;
 
 namespace Infrastructure.S3Service;
 
-public static class Contraints{
+public static class Contraints
+{
     public static string SubmissionsBucket = "gama-judge-submissions";
+    public static string FilesFolder = "submission_files";
 }
 
 public interface IS3Service
 {
     Task<IEnumerable<string>> ListObjects(string prefix, CancellationToken cancellationToken);
     Task<string> SubmitFile(string fileName, Stream stream, CancellationToken cancellationToken);
+    Task<Stream> GetSubmissionFile(string fileKey, CancellationToken cancellationToken);
 }
 
 public class S3Service : IS3Service
@@ -27,9 +30,18 @@ public class S3Service : IS3Service
         return await _s3Client.GetAllObjectKeysAsync(Contraints.SubmissionsBucket, prefix, null);
     }
 
-    public async Task<string> SubmitFile(string fileName, Stream stream, CancellationToken cancellationToken){
+    public async Task<string> SubmitFile(string fileName, Stream stream, CancellationToken cancellationToken)
+    {
         var bucketFileName = $"{Guid.NewGuid().ToString()}--{fileName}";
-        await _s3Client.UploadObjectFromStreamAsync(Contraints.SubmissionsBucket, $"submission_files/{bucketFileName}", stream, null, cancellationToken);
+        await _s3Client.UploadObjectFromStreamAsync(Contraints.SubmissionsBucket, $"{Contraints.FilesFolder}/{bucketFileName}", stream, null, cancellationToken);
         return bucketFileName;
+    }
+
+    public async Task<Stream> GetSubmissionFile(string fileKey, CancellationToken cancellationToken)
+    {
+        var file = await _s3Client.GetObjectAsync(Contraints.SubmissionsBucket, $"{Contraints.FilesFolder}/{fileKey}", cancellationToken);
+        if (file is null) throw new FileNotFoundException();
+
+        return file.ResponseStream;
     }
 }

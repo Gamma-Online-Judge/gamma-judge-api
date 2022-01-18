@@ -34,4 +34,13 @@ public class SubmissionController : ControllerBase
         var objectId = await _s3Service.SubmitFile(file.FileName, file.OpenReadStream(), cancellationToken);
         return Ok(objectId);
     }
+
+    [HttpGet]
+    [Route("submission/{fileKey}")]
+
+    public async Task<IActionResult> GetSubmission([FromRoute] string fileKey, CancellationToken cancellationToken)
+    {
+        var stream = await _s3Service.GetSubmissionFile(fileKey, cancellationToken);
+        return File(stream, "text/plain");
+    }
 }
