@@ -39,7 +39,17 @@ Logo após para executar o projeto basta executar o container utilizando as vari
 
 ```bash
 docker run \
+    -p 5138:5138 \
     -e AWS_ACCESS_KEY_ID=*** \
     -e AWS_SECRET_ACCESS_KEY=*** \
+    gamma-judge
+```
+
+Também é possível executar utilizando a configuração do arquiv *.env* executando o comando 
+
+```bash
+docker run \
+    -p 5138:5138 \
+    --env-file .env \
     gamma-judge
 ```
