@@ -2,7 +2,9 @@ using Amazon.S3;
 using Amazon.SQS;
 using BooksApi.Models;
 using BooksApi.Services;
+using contestsApi.Services;
 using Infrastructure.S3Service;
+using Infrastructure.Settings;
 using Infrastructure.SqsService;
 using Microsoft.Extensions.Options;
 using Workers;
@@ -20,11 +22,16 @@ public static class Register
 
         // Database
         services.Configure<BookstoreDatabaseSettings>(configuration.GetSection(nameof(BookstoreDatabaseSettings)));
+        services.Configure<JudgeDatabaseSettings>(configuration.GetSection(nameof(JudgeDatabaseSettings)));
 
         services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
         sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
+        services.AddSingleton<IJudgeDatabaseSettings>(sp =>
+        sp.GetRequiredService<IOptions<JudgeDatabaseSettings>>().Value);
+
         services.AddSingleton<BookService>();
+        services.AddSingleton<ContestService>();
 
         //AWS services
         services.AddAWSService<IAmazonS3>();
