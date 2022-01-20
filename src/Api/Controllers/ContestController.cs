@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using contestsApi.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,14 @@ namespace BooksApi.Controllers
     public class ContestController : ControllerBase
     {
         private readonly ContestService _contestService;
+        private readonly ILogger<ContestController> _logger;
 
-        public ContestController(ContestService contestService)
+        public ContestController(
+            ContestService contestService, 
+            ILogger<ContestController> logger)
         {
             _contestService = contestService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -35,7 +40,6 @@ namespace BooksApi.Controllers
         public ActionResult<Contest> Create(Contest contest)
         {
             _contestService.Create(contest);
-
             return CreatedAtRoute("GetContest", new { id = contest?.Id?.ToString() }, contest);
         }
 

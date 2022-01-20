@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using Infrastructure.Entities;
 using Infrastructure.Settings;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace contestsApi.Services
@@ -24,6 +26,10 @@ namespace contestsApi.Services
 
         public Contest Create(Contest contest)
         {
+            if (contest.Id is null)
+            {
+                contest.Id = ObjectId.GenerateNewId().ToString();
+            }
             _contests.InsertOne(contest);
             return contest;
         }
@@ -34,7 +40,7 @@ namespace contestsApi.Services
         public void Remove(Contest contestIn) =>
             _contests.DeleteOne(contest => contest.CustomId == contestIn.Id);
 
-        public void Remove(string id) => 
+        public void Remove(string id) =>
             _contests.DeleteOne(contest => contest.CustomId == id);
     }
 }
