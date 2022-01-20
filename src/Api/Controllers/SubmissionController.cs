@@ -1,5 +1,4 @@
-using Infrastructure.S3Service;
-using Infrastructure.SqsService;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

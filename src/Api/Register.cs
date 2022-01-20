@@ -1,9 +1,7 @@
 using Amazon.S3;
 using Amazon.SQS;
-using contestsApi.Services;
-using Infrastructure.S3Service;
+using Infrastructure.Services;
 using Infrastructure.Settings;
-using Infrastructure.SqsService;
 using Microsoft.Extensions.Options;
 using Workers;
 

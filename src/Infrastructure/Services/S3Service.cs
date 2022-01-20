@@ -1,6 +1,6 @@
 using Amazon.S3;
 
-namespace Infrastructure.S3Service;
+namespace Infrastructure.Services;
 
 public static class Contraints
 {

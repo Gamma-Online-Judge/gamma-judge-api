@@ -2,7 +2,7 @@ using System.Text.Json;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 
-namespace Infrastructure.SqsService;
+namespace Infrastructure.Services;
 
 public class SqsService
 {

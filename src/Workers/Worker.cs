@@ -1,5 +1,6 @@
 using Amazon.SQS;
 using Microsoft.Extensions.Logging;
+using Workers.Models;
 
 namespace Workers;
 

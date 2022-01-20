@@ -1,4 +1,4 @@
-namespace Workers;
+namespace Workers.Models;
 
 public enum SqsMessageReturn
 {

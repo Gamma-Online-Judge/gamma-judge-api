@@ -4,6 +4,8 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Workers.Models;
+
 namespace Workers;
 
 public abstract class BaseSqsWorker<TMessageType>: BackgroundService

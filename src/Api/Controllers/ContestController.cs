@@ -1,4 +1,4 @@
-using contestsApi.Services;
+using Infrastructure.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 
