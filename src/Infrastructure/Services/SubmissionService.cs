@@ -7,12 +7,6 @@ using Amazon.S3;
 
 namespace Infrastructure.Services;
 
-public static class Contraints
-{
-    public static string SubmissionsBucket = "gama-judge-submissions";
-    public static string FilesFolder = "submission_files";
-}
-
 public class SubmissionService
 {
     private readonly IMongoCollection<Submission> _submissions;
@@ -39,14 +33,14 @@ public class SubmissionService
     public async Task<Submission> Create(Submission submission, Stream stream, CancellationToken cancellationToken)
     {
         submission.Id = ObjectId.GenerateNewId().ToString();
-        await _s3Client.UploadObjectFromStreamAsync(Contraints.SubmissionsBucket, $"{Contraints.FilesFolder}/{submission.FileKey}", stream, null, cancellationToken);
+        await _s3Client.UploadObjectFromStreamAsync(Contraints.S3Bucket, $"{Contraints.SubmissionsFolder}/{submission.FileKey}", stream, null, cancellationToken);
         await _submissions.InsertOneAsync(submission);
         return submission;
     }
 
     public async Task<Stream> GetFile(Submission submission, CancellationToken cancellationToken)
     {
-        var file = await _s3Client.GetObjectAsync(Contraints.SubmissionsBucket, $"{Contraints.FilesFolder}/{submission.FileKey}", cancellationToken);
+        var file = await _s3Client.GetObjectAsync(Contraints.S3Bucket, $"{Contraints.SubmissionsFolder}/{submission.FileKey}", cancellationToken);
         if (file is null) throw new FileNotFoundException();
         return file.ResponseStream;
     }
