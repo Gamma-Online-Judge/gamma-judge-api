@@ -1,7 +1,5 @@
 using Amazon.S3;
 using Amazon.SQS;
-using BooksApi.Models;
-using BooksApi.Services;
 using contestsApi.Services;
 using Infrastructure.S3Service;
 using Infrastructure.Settings;
@@ -21,16 +19,11 @@ public static class Register
         services.AddEndpointsApiExplorer();
 
         // Database
-        services.Configure<BookstoreDatabaseSettings>(configuration.GetSection(nameof(BookstoreDatabaseSettings)));
         services.Configure<JudgeDatabaseSettings>(configuration.GetSection(nameof(JudgeDatabaseSettings)));
-
-        services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
-        sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
         services.AddSingleton<IJudgeDatabaseSettings>(sp =>
         sp.GetRequiredService<IOptions<JudgeDatabaseSettings>>().Value);
 
-        services.AddSingleton<BookService>();
         services.AddSingleton<ContestService>();
 
         //AWS services
@@ -38,8 +31,8 @@ public static class Register
         services.AddAWSService<IAmazonSQS>();
 
         // Infrastructure
-        services.AddSingleton<IS3Service, S3Service>();
-        services.AddSingleton<ISqsService, SqsService>();
+        services.AddSingleton<S3Service>();
+        services.AddSingleton<SqsService>();
 
 
         services.AddWorkers(configuration);

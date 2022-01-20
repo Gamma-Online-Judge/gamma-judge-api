@@ -8,14 +8,7 @@ public static class Contraints
     public static string FilesFolder = "submission_files";
 }
 
-public interface IS3Service
-{
-    Task<IEnumerable<string>> ListObjects(string prefix, CancellationToken cancellationToken);
-    Task<string> SubmitFile(string fileName, Stream stream, CancellationToken cancellationToken);
-    Task<Stream> GetSubmissionFile(string fileKey, CancellationToken cancellationToken);
-}
-
-public class S3Service : IS3Service
+public class S3Service
 {
 
     private readonly IAmazonS3 _s3Client;

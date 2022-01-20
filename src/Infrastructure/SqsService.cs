@@ -4,17 +4,12 @@ using Amazon.SQS.Model;
 
 namespace Infrastructure.SqsService;
 
-public interface ISqsService
+public class SqsService
 {
-    public Task<SendMessageResponse> EnqueueAsync<T>(T message, CancellationToken cancellationToken);
-}
 
-public class SqsService : ISqsService
-{
-    
     private readonly IAmazonSQS _sqsClient;
     private readonly string _queueUrl = "https://sqs.sa-east-1.amazonaws.com/818598312538/CompileJobs";
-    
+
     public SqsService(IAmazonSQS sqsClient)
     {
         _sqsClient = sqsClient;

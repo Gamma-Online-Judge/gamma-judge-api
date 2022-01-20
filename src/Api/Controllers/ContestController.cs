@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using contestsApi.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +9,11 @@ namespace BooksApi.Controllers
     public class ContestController : ControllerBase
     {
         private readonly ContestService _contestService;
-        private readonly ILogger<ContestController> _logger;
 
         public ContestController(
-            ContestService contestService, 
-            ILogger<ContestController> logger)
+            ContestService contestService)
         {
             _contestService = contestService;
-            _logger = logger;
         }
 
         [HttpGet]

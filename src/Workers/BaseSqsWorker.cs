@@ -80,11 +80,11 @@ public abstract class BaseSqsWorker<TMessageType>: BackgroundService
                     throw new ArgumentOutOfRangeException();
             }
         }
-        catch (JsonException e)
+        catch (JsonException)
         {
             _logger.LogError("Error deserializing message: {@message}", message);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             _logger.LogError("Error processing message: {@message}", message);
         }

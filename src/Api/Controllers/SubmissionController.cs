@@ -1,5 +1,3 @@
-using Amazon.SQS.Model;
-using Api.Models;
 using Infrastructure.S3Service;
 using Infrastructure.SqsService;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +9,10 @@ namespace Api.Controllers;
 public class SubmissionController : ControllerBase
 {
     private readonly ILogger<SubmissionController> _logger;
-    private readonly ISqsService _sqsService;
-    private readonly IS3Service _s3Service;
+    private readonly SqsService _sqsService;
+    private readonly S3Service _s3Service;
 
-    public SubmissionController(ILogger<SubmissionController> logger, ISqsService sqsService, IS3Service s3Service)
+    public SubmissionController(ILogger<SubmissionController> logger, SqsService sqsService, S3Service s3Service)
     {
         _logger = logger;
         _sqsService = sqsService;
