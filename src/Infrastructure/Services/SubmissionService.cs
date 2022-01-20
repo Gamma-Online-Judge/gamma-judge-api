@@ -11,14 +11,16 @@ public class SubmissionService
 {
     private readonly IMongoCollection<Submission> _submissions;
     private readonly IAmazonS3 _s3Client;
+    private readonly SqsService _sqsService;
 
-    public SubmissionService(IJudgeDatabaseSettings settings, IAmazonS3 s3Client)
+    public SubmissionService(IJudgeDatabaseSettings settings, IAmazonS3 s3Client, SqsService sqsService)
     {
         var client = new MongoClient(settings.ConnectionString);
         var database = client.GetDatabase(settings.DatabaseName);
 
         _submissions = database.GetCollection<Submission>(settings.SubmissionsCollectionName);
         _s3Client = s3Client;
+        _sqsService = sqsService;
     }
 
     public bool Exists(string? id) =>
@@ -35,6 +37,7 @@ public class SubmissionService
         submission.Id = ObjectId.GenerateNewId().ToString();
         await _s3Client.UploadObjectFromStreamAsync(Contraints.S3Bucket, $"{Contraints.SubmissionsFolder}/{submission.FileKey}", stream, null, cancellationToken);
         await _submissions.InsertOneAsync(submission);
+        await _sqsService.EnqueueSubmissionc(submission, cancellationToken);
         return submission;
     }
 
