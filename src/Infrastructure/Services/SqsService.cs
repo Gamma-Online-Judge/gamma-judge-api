@@ -1,7 +1,7 @@
-using System.Text.Json;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Infrastructure.Entities;
+using Newtonsoft.Json;
 
 namespace Infrastructure.Services;
 
@@ -16,7 +16,7 @@ public class SqsService
 
     public async Task<SendMessageResponse> EnqueueSubmissionc(Submission submission, CancellationToken cancellationToken)
     {
-        string jsonString = JsonSerializer.Serialize(submission);
+        string jsonString = JsonConvert.SerializeObject(submission);
         return await _sqsClient.SendMessageAsync(Contraints.SubmissionsQueueUrl, jsonString, cancellationToken);
     }
 }
