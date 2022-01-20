@@ -14,6 +14,8 @@ public class Submission
     public SubmissionLanguage Language { get; set; }
     public string FileName { get; set; } = "";
     public SubmissionStatus Status { get; set; } = SubmissionStatus.Pending;
+
+    public string FileKey => $"{Id}.{Language.GetExtension()}";
 }
 
 public enum SubmissionStatus
@@ -48,6 +50,18 @@ public static class SubmissionExtensions
             SubmissionLanguage.Java => "java",
             SubmissionLanguage.Python2 => "py2",
             SubmissionLanguage.Python3 => "py3",
+            _ => throw new ArgumentException("Invalid language")
+        };
+    }
+    public static SubmissionLanguage ToSubmissionLanguage(this string language)
+    {
+        return language switch
+        {
+            "c" => SubmissionLanguage.C,
+            "cpp" => SubmissionLanguage.Cpp,
+            "java" => SubmissionLanguage.Java,
+            "py2" => SubmissionLanguage.Python2,
+            "py3" => SubmissionLanguage.Python3,
             _ => throw new ArgumentException("Invalid language")
         };
     }

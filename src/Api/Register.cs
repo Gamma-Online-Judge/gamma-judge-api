@@ -24,6 +24,7 @@ public static class Register
 
         services.AddSingleton<ContestService>();
         services.AddSingleton<ProblemService>();
+        services.AddSingleton<SubmissionService>();
 
         //AWS services
         services.AddAWSService<IAmazonS3>();

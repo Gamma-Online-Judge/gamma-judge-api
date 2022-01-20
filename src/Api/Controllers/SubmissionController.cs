@@ -1,43 +1,52 @@
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using Api.Models;
 
 namespace Api.Controllers;
 
 [ApiController]
-[Route("")]
+[Route("api/submissions")]
 public class SubmissionController : ControllerBase
 {
     private readonly ILogger<SubmissionController> _logger;
-    private readonly SqsService _sqsService;
-    private readonly S3Service _s3Service;
+    private readonly SubmissionService _submissionService;
 
-    public SubmissionController(ILogger<SubmissionController> logger, SqsService sqsService, S3Service s3Service)
+    public SubmissionController(ILogger<SubmissionController> logger, SubmissionService submissionService)
     {
         _logger = logger;
-        _sqsService = sqsService;
-        _s3Service = s3Service;
+        _submissionService = submissionService;
+    }
+
+    [HttpGet]
+    [Route("")]
+
+    public IActionResult GetSubmissions()
+    {
+        return Ok(_submissionService.Get());
     }
 
     [HttpPost]
-    [Route("judge")]
+    [Route("")]
 
-    public async Task<IActionResult> PostSubmission(ICollection<IFormFile> files, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostSubmission(
+        [FromBody] SubmissionRequest submissionRequest, 
+        ICollection<IFormFile> files, 
+        CancellationToken cancellationToken)
     {
         if (files is null || files.Count == 0)
             return BadRequest(
                 "Did not receive a file to process."
             );
         var file = files.First();
-        var objectId = await _s3Service.SubmitFile(file.FileName, file.OpenReadStream(), cancellationToken);
-        return Ok(objectId);
+        var submission = submissionRequest.ToSubmission(file.FileName);
+        return Ok(await _submissionService.Create(submission, file.OpenReadStream(), cancellationToken));
     }
 
     [HttpGet]
-    [Route("submission/{fileKey}")]
+    [Route("{id}")]
 
-    public async Task<IActionResult> GetSubmission([FromRoute] string fileKey, CancellationToken cancellationToken)
+    public IActionResult GetSubmission([FromRoute] string id)
     {
-        var stream = await _s3Service.GetSubmissionFile(fileKey, cancellationToken);
-        return File(stream, "text/plain");
+        return Ok(_submissionService.Get(id));
     }
 }
