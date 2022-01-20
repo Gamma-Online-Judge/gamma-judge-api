@@ -9,7 +9,7 @@ public static class Register
     {
         var config = configuration.GetAWSOptions();
         services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-        services.AddHostedService<Worker>();
+        services.AddHostedService<SubmissionResultWorker>();
     }
     
     private static TType GetConfiguration<TType>(
