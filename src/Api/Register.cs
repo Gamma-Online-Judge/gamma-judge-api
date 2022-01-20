@@ -13,7 +13,7 @@ public static class Register
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddControllers();
+        services.AddControllers().AddNewtonsoftJson();
         services.AddEndpointsApiExplorer();
 
         // Database
