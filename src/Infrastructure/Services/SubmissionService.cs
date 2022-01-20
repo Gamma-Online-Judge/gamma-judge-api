@@ -43,4 +43,17 @@ public class SubmissionService
         await _submissions.InsertOneAsync(submission);
         return submission;
     }
+
+    public async Task<Stream> GetFile(Submission submission, CancellationToken cancellationToken)
+    {
+        var file = await _s3Client.GetObjectAsync(Contraints.SubmissionsBucket, $"{Contraints.FilesFolder}/{submission.FileKey}", cancellationToken);
+        if (file is null) throw new FileNotFoundException();
+        return file.ResponseStream;
+    }
+
+    public async Task<Stream> GetFile(string submissionId, CancellationToken cancellationToken)
+    {
+        var submission = Get(submissionId);
+        return await GetFile(submission, cancellationToken);
+    }
 }

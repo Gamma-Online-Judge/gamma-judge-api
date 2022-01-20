@@ -31,7 +31,6 @@ public static class Register
         services.AddAWSService<IAmazonSQS>();
 
         // Infrastructure
-        services.AddSingleton<S3Service>();
         services.AddSingleton<SqsService>();
 
 

@@ -42,10 +42,19 @@ public class SubmissionController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("status/{id}")]
 
-    public IActionResult GetSubmission([FromRoute] string id)
+    public IActionResult GetSubmissionStatus([FromRoute] string id)
     {
         return Ok(_submissionService.Get(id));
+    }
+
+    [HttpGet]
+    [Route("file/{id}")]
+
+    public async Task<IActionResult> GetSubmissionFile([FromRoute] string id, CancellationToken cancellationToken)
+    {
+        var stream = await _submissionService.GetFile(id, cancellationToken);
+        return File(stream, "text/plain");
     }
 }
