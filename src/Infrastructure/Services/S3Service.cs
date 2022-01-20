@@ -2,12 +2,6 @@ using Amazon.S3;
 
 namespace Infrastructure.Services;
 
-public static class Contraints
-{
-    public static string SubmissionsBucket = "gama-judge-submissions";
-    public static string FilesFolder = "submission_files";
-}
-
 public class S3Service
 {
 
