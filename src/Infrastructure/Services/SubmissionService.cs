@@ -41,6 +41,9 @@ public class SubmissionService
         return submission;
     }
 
+    public void Update(string id, Submission submissionIn) => _submissions.ReplaceOne(submission => submission.Id == id, submissionIn);
+
+
     public async Task<Stream> GetFile(Submission submission, CancellationToken cancellationToken)
     {
         var file = await _s3Client.GetObjectAsync(Contraints.S3Bucket, $"{Contraints.SubmissionsFolder}/{submission.FileKey}", cancellationToken);

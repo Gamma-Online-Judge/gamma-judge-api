@@ -1,18 +1,24 @@
 using System.Net;
-using System.Text.Json;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Workers.Models;
+using Newtonsoft.Json;
 
 namespace Workers;
 
-public abstract class BaseSqsWorker<TMessageType>: BackgroundService
+public abstract class BaseSqsWorker<TMessageType> : BackgroundService
 {
+    private class MessageShape
+    {
+        public string MessageId { get; set; } = "";
+        public string Message { get; set; } = "";
+    }
+
     private readonly ILogger<BaseSqsWorker<TMessageType>> _logger;
     private readonly IAmazonSQS _amazonSqs;
-    
+
     protected BaseSqsWorker(ILogger<BaseSqsWorker<TMessageType>> logger, IAmazonSQS amazonSqs)
     {
         _amazonSqs = amazonSqs;
@@ -28,12 +34,7 @@ public abstract class BaseSqsWorker<TMessageType>: BackgroundService
         while (!cancellationToken.IsCancellationRequested)
         {
             _logger.LogDebug("Worker running at: {time}", DateTimeOffset.Now);
-            var request = new ReceiveMessageRequest
-            {
-                QueueUrl = QueueUrl,
-                MaxNumberOfMessages = MaxParallel,
-            };
-            var response = await _amazonSqs.ReceiveMessageAsync(request, cancellationToken);
+            var response = await _amazonSqs.ReceiveMessageAsync(QueueUrl, cancellationToken);
             if (response.HttpStatusCode != HttpStatusCode.OK)
             {
                 _logger.LogError("Error receiving message from queue: {@response}", response);
@@ -53,27 +54,29 @@ public abstract class BaseSqsWorker<TMessageType>: BackgroundService
 
     private async Task ProcessMessages(IEnumerable<Message> messages, CancellationToken cancellationToken)
     {
-        await Task.WhenAll(messages.Select(message => LogAndProcessMessage(message, cancellationToken)).ToList());
+        await Task.WhenAll(messages.Select(message => LogAndProcessMessage(DesserializeMessage(message), message.ReceiptHandle, cancellationToken)).ToList());
     }
 
-    private async Task LogAndProcessMessage(Message message, CancellationToken cancellationToken)
+    private TMessageType DesserializeMessage(Message sqsMessage)
     {
-        _logger.LogInformation("Processing message: {@message}", message);
+        var messageShape = JsonConvert.DeserializeObject<MessageShape>(sqsMessage.Body);
+        var result = JsonConvert.DeserializeObject<TMessageType>(messageShape?.Message ?? "");
+        if (result is null)
+            throw new JsonException("Message deserialization failed");
+        return result;
+    }
+
+    private async Task LogAndProcessMessage(TMessageType message, string receiptHandle, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation($"Processing message: {message}");
         try
         {
-            var messageBody = JsonSerializer.Deserialize<TMessageType>(message.Body);
-            if (messageBody == null)
-            {
-                _logger.LogError("Error deserializing message: {@message}", message);
-                return;
-            }
-
-            var result = await ProcessMessage(messageBody, cancellationToken);
+            var result = await ProcessMessage(message, cancellationToken);
             switch (result)
             {
                 case SqsMessageReturn.Success:
                     _logger.LogInformation("Deleting message: {@message}", message);
-                    await _amazonSqs.DeleteMessageAsync(QueueUrl, message.ReceiptHandle, cancellationToken);
+                    await _amazonSqs.DeleteMessageAsync(QueueUrl, receiptHandle, cancellationToken);
                     break;
                 case SqsMessageReturn.Failure:
                     _logger.LogInformation("Error processing message: {@message}", message);
@@ -82,13 +85,13 @@ public abstract class BaseSqsWorker<TMessageType>: BackgroundService
                     throw new ArgumentOutOfRangeException();
             }
         }
-        catch (JsonException)
+        catch (JsonException e)
         {
-            _logger.LogError("Error deserializing message: {@message}", message);
+            _logger.LogError($"Error deserializing message: {e.Message}");
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            _logger.LogError("Error processing message: {@message}", message);
+            _logger.LogError($"Error processing message: {e.Message}");
         }
     }
     protected abstract Task<SqsMessageReturn> ProcessMessage(TMessageType message, CancellationToken cancellationToken);
