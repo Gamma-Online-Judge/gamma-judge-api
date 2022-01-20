@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Infrastructure.Entities;
 using Infrastructure.Settings;
 using MongoDB.Bson;

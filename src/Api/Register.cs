@@ -25,6 +25,7 @@ public static class Register
         sp.GetRequiredService<IOptions<JudgeDatabaseSettings>>().Value);
 
         services.AddSingleton<ContestService>();
+        services.AddSingleton<ProblemService>();
 
         //AWS services
         services.AddAWSService<IAmazonS3>();

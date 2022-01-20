@@ -11,6 +11,7 @@ public class JudgeDatabaseSettings : IJudgeDatabaseSettings
 public interface IJudgeDatabaseSettings
 {
     string ContestsCollectionName { get; set; }
+    string ProblemsCollectionName { get; set; }
     string ConnectionString { get; set; }
     string DatabaseName { get; set; }
 }
