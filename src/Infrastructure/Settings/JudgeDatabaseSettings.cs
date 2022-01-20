@@ -3,6 +3,7 @@ namespace Infrastructure.Settings;
 public class JudgeDatabaseSettings : IJudgeDatabaseSettings
 {
     public string ContestsCollectionName { get; set; } = "";
+    public string ProblemsCollectionName { get; set; } = "";
     public string ConnectionString { get; set; } = "";
     public string DatabaseName { get; set; } = "";
 }
