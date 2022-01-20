@@ -1,4 +1,5 @@
 using Infrastructure.Entities;
+using Infrastructure.Exceptions;
 using Infrastructure.Settings;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -17,6 +18,9 @@ public class ContestService
         _contests = database.GetCollection<Contest>(settings.ContestsCollectionName);
     }
 
+    public bool Exists(string? id) =>
+        _contests.Find<Contest>(contest => contest.CustomId == id).Any();
+
     public List<Contest> Get() =>
         _contests.Find(contest => true).ToList();
 
@@ -25,20 +29,24 @@ public class ContestService
 
     public Contest Create(Contest contest)
     {
-        if (contest.Id is null)
-        {
-            contest.Id = ObjectId.GenerateNewId().ToString();
-        }
+        contest.Id = ObjectId.GenerateNewId().ToString();
+        if (contest.CustomId is null) throw new InvalidIdException(contest.CustomId);
+        if (Exists(contest.CustomId)) throw new IdAlreadyExists(contest.CustomId);
+
         _contests.InsertOne(contest);
         return contest;
     }
 
-    public void Update(string id, Contest contestIn) =>
+    public void Update(string id, Contest contestIn)
+    {
+        var contest = Get(id);
+        contestIn.Id = contest.Id;
         _contests.ReplaceOne(contest => contest.CustomId == id, contestIn);
+    }
 
     public void Remove(Contest contestIn) =>
-        _contests.DeleteOne(contest => contest.CustomId == contestIn.Id);
+        _contests.DeleteMany(contest => contest.CustomId == contestIn.Id);
 
     public void Remove(string id) =>
-        _contests.DeleteOne(contest => contest.CustomId == id);
+        _contests.DeleteMany(contest => contest.CustomId == id);
 }

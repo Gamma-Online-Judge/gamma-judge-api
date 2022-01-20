@@ -51,7 +51,7 @@ namespace BooksApi.Controllers
 
             _problemService.Update(id, problemIn);
 
-            return NoContent();
+            return Ok(_problemService.Get(id));
         }
 
         [HttpDelete("{id}")]
@@ -59,13 +59,14 @@ namespace BooksApi.Controllers
         {
             var problem = _problemService.Get(id);
 
-            if (problem.Id is not null)
+            if (problem?.Id is null || _problemService.Exists(id))
             {
-                _problemService.Remove(problem.Id);
+                return NotFound();
 
-                return NoContent();
             }
-            return NotFound();
+            _problemService.Remove(problem.Id);
+            return NoContent();
+
         }
     }
 }

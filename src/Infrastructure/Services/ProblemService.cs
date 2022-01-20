@@ -1,4 +1,5 @@
 using Infrastructure.Entities;
+using Infrastructure.Exceptions;
 using Infrastructure.Settings;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -17,6 +18,9 @@ public class ProblemService
         _problems = database.GetCollection<Problem>(settings.ProblemsCollectionName);
     }
 
+    public bool Exists(string? id) =>
+        _problems.Find<Problem>(contest => contest.CustomId == id).Any();
+
     public List<Problem> Get() =>
         _problems.Find(_ => true).ToList();
 
@@ -25,16 +29,19 @@ public class ProblemService
 
     public Problem Create(Problem problem)
     {
-        if (problem.Id is null)
-        {
-            problem.Id = ObjectId.GenerateNewId().ToString();
-        }
+        problem.Id = ObjectId.GenerateNewId().ToString();
+        if (problem.CustomId is null) throw new InvalidIdException(problem.CustomId);
+        if (Exists(problem.CustomId)) throw new IdAlreadyExists(problem.CustomId);
+
         _problems.InsertOne(problem);
         return problem;
     }
 
-    public void Update(string id, Problem problemIn) =>
+    public void Update(string id, Problem problemIn){
+        var problem = Get(id);
+        problemIn.Id = problem.Id;
         _problems.ReplaceOne(problem => problem.CustomId == id, problemIn);
+    }
 
     public void Remove(Problem problemIn) =>
         _problems.DeleteOne(problem => problem.CustomId == problemIn.Id);

@@ -51,19 +51,17 @@ namespace BooksApi.Controllers
 
             _contestService.Update(id, contestIn);
 
-            return NoContent();
+            return Ok(_contestService.Get(id));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
             var contest = _contestService.Get(id);
-
-            if (contest?.Id == null)
+            if (!_contestService.Exists(id) || contest?.Id is null)
             {
                 return NotFound();
             }
-
             _contestService.Remove(contest.Id);
 
             return NoContent();
