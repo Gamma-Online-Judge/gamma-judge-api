@@ -33,7 +33,6 @@ public abstract class BaseSqsWorker<TMessageType> : BackgroundService
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            _logger.LogDebug("Worker running at: {time}", DateTimeOffset.Now);
             var response = await _amazonSqs.ReceiveMessageAsync(QueueUrl, cancellationToken);
             if (response.HttpStatusCode != HttpStatusCode.OK)
             {
@@ -44,7 +43,6 @@ public abstract class BaseSqsWorker<TMessageType> : BackgroundService
 
             if (response.Messages.Count == 0)
             {
-                _logger.LogInformation("No messages in queue");
                 await Task.Delay(DelayAfterNoMessage, cancellationToken);
             }
 

@@ -24,6 +24,7 @@ public class SubmissionResultWorker : BaseSqsWorker<SubmissionResultModel>
         _logger = logger;
     }
     protected override string QueueUrl => Contraints.SubmissionResultQueueUrl;
+    protected override int DelayAfterNoMessage => 2;
     protected override Task<SqsMessageReturn> ProcessMessage(SubmissionResultModel result, CancellationToken cancellationToken)
     {
         var submission = _submissionService.Get(result.Id);

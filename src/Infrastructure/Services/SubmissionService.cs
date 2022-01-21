@@ -36,6 +36,7 @@ public class SubmissionService
     {
         submission.Id = ObjectId.GenerateNewId().ToString();
         await _s3Client.UploadObjectFromStreamAsync(Contraints.S3Bucket, $"{Contraints.SubmissionsFolder}/{submission.FileKey}", stream, null, cancellationToken);
+        submission.Status = SubmissionStatus.Running;
         await _submissions.InsertOneAsync(submission);
         await _sqsService.EnqueueSubmissionc(submission, cancellationToken);
         return submission;
