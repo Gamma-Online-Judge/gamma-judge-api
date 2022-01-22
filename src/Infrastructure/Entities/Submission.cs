@@ -17,7 +17,7 @@ public class Submission
     public SubmissionLanguage Language { get; set; }
     public string FileName { get; set; } = "";
     public SubmissionStatus Status { get; set; } = SubmissionStatus.Pending;
-
+    public string SubmissionDetails { get; set; } = "";
     public string FileKey => $"{Id}.{Language.GetExtension()}";
 }
 
@@ -74,6 +74,50 @@ public static class SubmissionExtensions
             "py2" => SubmissionLanguage.Python2,
             "py3" => SubmissionLanguage.Python3,
             _ => throw new ArgumentException("Invalid language")
+        };
+    }
+
+    public static SubmissionStatus ToSubmissionStatus(this string details)
+    {
+        if (details.Contains("Accepted"))
+        {
+            return SubmissionStatus.Accepted;
+        }
+        else if (details.Contains("Time Limit Exceeded"))
+        {
+            return SubmissionStatus.TimeLimitExceeded;
+        }
+        else if (details.Contains("Runtime Error"))
+        {
+            return SubmissionStatus.RuntimeError;
+        }
+        else if (details.Contains("Wrong Answer"))
+        {
+            return SubmissionStatus.WrongAnswer;
+        }
+        else if (details.Contains("Compilation Error"))
+        {
+            return SubmissionStatus.CompilationError;
+        }
+        else if (details.Contains("Memory Limit Exceeded"))
+        {
+            return SubmissionStatus.MemoryLimitExceeded;
+        }
+        else if (details.Contains("In Queue"))
+        {
+            return SubmissionStatus.InQueue;
+        }
+        else if (details.Contains("Pending"))
+        {
+            return SubmissionStatus.Pending;
+        }
+        else if (details.Contains("Running"))
+        {
+            return SubmissionStatus.Running;
+        }
+        else
+        {
+            throw new ArgumentException("Invalid details");
         };
     }
 }

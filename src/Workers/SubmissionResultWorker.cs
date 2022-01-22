@@ -28,22 +28,8 @@ public class SubmissionResultWorker : BaseSqsWorker<SubmissionResultModel>
     protected override Task<SqsMessageReturn> ProcessMessage(SubmissionResultModel result, CancellationToken cancellationToken)
     {
         var submission = _submissionService.Get(result.Id);
-        if (result.Result.Contains("Accepted"))
-        {
-            submission.Status = SubmissionStatus.Accepted;
-        }
-        else if (result.Result.Contains("Time Limit Exceeded"))
-        {
-            submission.Status = SubmissionStatus.TimeLimitExceeded;
-        }
-        else if (result.Result.Contains("Runtime Error"))
-        {
-            submission.Status = SubmissionStatus.RuntimeError;
-        }
-        else if (result.Result.Contains("Wrong Answer"))
-        {
-            submission.Status = SubmissionStatus.WrongAnswer;
-        }
+        submission.SubmissionDetails = result.Result;
+        submission.Status = result.Result.ToSubmissionStatus();
 
         _submissionService.Update(result.Id, submission);
         return Task.FromResult(SqsMessageReturn.Success);
