@@ -42,12 +42,28 @@ public enum SubmissionLanguage
     C,
     [EnumMember(Value = "cpp")]
     Cpp,
+    [EnumMember(Value = "go")]
+    Go,
     [EnumMember(Value = "java")]
     Java,
+    [EnumMember(Value = "js")]
+    JavaScript,
+    [EnumMember(Value = "ml")]
+    ML,
+    [EnumMember(Value = "pas")]
+    Pascal,
     [EnumMember(Value = "py2")]
     Python2,
     [EnumMember(Value = "py3")]
-    Python3
+    Python3,
+    [EnumMember(Value = "riscv")]
+    RiscV,
+    [EnumMember(Value = "rs")]
+    Racket,
+    [EnumMember(Value = "sh")]
+    Bash,
+    [EnumMember(Value = "spim")]
+    Spim
 }
 
 public static class SubmissionExtensions
@@ -58,9 +74,17 @@ public static class SubmissionExtensions
         {
             SubmissionLanguage.C => "c",
             SubmissionLanguage.Cpp => "cpp",
+            SubmissionLanguage.Go => "go",
             SubmissionLanguage.Java => "java",
+            SubmissionLanguage.JavaScript => "js",
+            SubmissionLanguage.ML => "ml",
+            SubmissionLanguage.Pascal => "pas",
             SubmissionLanguage.Python2 => "py2",
             SubmissionLanguage.Python3 => "py3",
+            SubmissionLanguage.RiscV => "riscv",
+            SubmissionLanguage.Racket => "rs",
+            SubmissionLanguage.Bash => "sh",
+            SubmissionLanguage.Spim => "spim",
             _ => throw new ArgumentException("Invalid language")
         };
     }
@@ -70,9 +94,17 @@ public static class SubmissionExtensions
         {
             "c" => SubmissionLanguage.C,
             "cpp" => SubmissionLanguage.Cpp,
+            "go" => SubmissionLanguage.Go,
             "java" => SubmissionLanguage.Java,
+            "js" => SubmissionLanguage.JavaScript,
+            "ml" => SubmissionLanguage.ML,
+            "pas" => SubmissionLanguage.Pascal,
             "py2" => SubmissionLanguage.Python2,
             "py3" => SubmissionLanguage.Python3,
+            "riscv" => SubmissionLanguage.RiscV,
+            "rs" => SubmissionLanguage.Racket,
+            "sh" => SubmissionLanguage.Bash,
+            "spim" => SubmissionLanguage.Spim,
             _ => throw new ArgumentException("Invalid language")
         };
     }
