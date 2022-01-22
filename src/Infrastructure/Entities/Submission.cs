@@ -135,7 +135,7 @@ public static class SubmissionExtensions
         {
             return SubmissionStatus.MemoryLimitExceeded;
         }
-        else if (details.Contains("In Queue"))
+        else if (details.Contains("InQueue"))
         {
             return SubmissionStatus.InQueue;
         }

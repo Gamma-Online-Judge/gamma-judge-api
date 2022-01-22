@@ -29,7 +29,12 @@ public class SubmissionResultWorker : BaseSqsWorker<SubmissionResultModel>
     {
         var submission = _submissionService.Get(result.Id);
         submission.SubmissionDetails = result.Result;
-        submission.Status = result.Result.ToSubmissionStatus();
+        if (submission.Status == SubmissionStatus.InQueue ||
+            submission.Status == SubmissionStatus.Running ||
+            submission.Status == SubmissionStatus.Pending)
+        {
+            submission.Status = result.Result.ToSubmissionStatus();
+        }
 
         _submissionService.Update(result.Id, submission);
         return Task.FromResult(SqsMessageReturn.Success);
