@@ -149,7 +149,7 @@ public static class SubmissionExtensions
         }
         else
         {
-            throw new ArgumentException("Invalid details");
+            throw new ArgumentException($"Invalid details: {details}");
         };
     }
 }
