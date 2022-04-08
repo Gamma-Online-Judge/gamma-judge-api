@@ -39,6 +39,13 @@ namespace BooksApi.Controllers
             return CreatedAtRoute("GetProblem", new { id = problem?.Id?.ToString() }, problem);
         }
 
+        [HttpPut]
+        public ActionResult<Problem> CreateOrUpdate(Problem problem)
+        {
+            _problemService.CreateOrUpdate(problem);
+            return CreatedAtRoute("GetProblem", new { id = problem?.Id?.ToString() }, problem);
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(string id, Problem problemIn)
         {

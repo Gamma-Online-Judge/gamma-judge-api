@@ -37,6 +37,15 @@ public class ProblemService
         return problem;
     }
 
+    public Problem CreateOrUpdate(Problem problem){
+        if (problem.CustomId is null) throw new InvalidIdException(problem.CustomId);
+        if (Exists(problem.CustomId)){
+            Update(problem.CustomId, problem);
+            return Get(problem.CustomId);
+        }
+        return Create(problem);
+    }
+
     public void Update(string id, Problem problemIn){
         var problem = Get(id);
         problemIn.Id = problem.Id;
