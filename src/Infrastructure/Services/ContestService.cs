@@ -37,6 +37,17 @@ public class ContestService
         return contest;
     }
 
+    public Contest CreateOrUpdate(Contest contest)
+    {
+        if (contest.CustomId is null) throw new InvalidIdException(contest.CustomId);
+        if (Exists(contest.CustomId))
+        {
+            Update(contest.CustomId, contest);
+            return Get(contest.CustomId);
+        }
+        return Create(contest);
+    }
+
     public void Update(string id, Contest contestIn)
     {
         var contest = Get(id);

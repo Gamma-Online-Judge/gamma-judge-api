@@ -39,6 +39,13 @@ namespace BooksApi.Controllers
             return CreatedAtRoute("GetContest", new { id = contest?.Id?.ToString() }, contest);
         }
 
+        [HttpPut]
+        public ActionResult<Contest> CreateOrUpdate(Contest contest)
+        {
+            _contestService.CreateOrUpdate(contest);
+            return CreatedAtRoute("GetContest", new { id = contest?.Id?.ToString() }, contest);
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(string id, Contest contestIn)
         {
