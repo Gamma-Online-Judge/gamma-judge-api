@@ -2,78 +2,77 @@ using Infrastructure.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BooksApi.Controllers
+namespace BooksApi.Controllers;
+
+[Route("api/problems")]
+[ApiController]
+public class ProblemController : ControllerBase
 {
-    [Route("api/problems")]
-    [ApiController]
-    public class ProblemController : ControllerBase
+    private readonly ProblemService _problemService;
+
+    public ProblemController(
+        ProblemService problemService)
     {
-        private readonly ProblemService _problemService;
+        _problemService = problemService;
+    }
 
-        public ProblemController(
-            ProblemService problemService)
+    [HttpGet]
+    public ActionResult<List<Problem>> Get() => _problemService.Get();
+
+    [HttpGet("{id}", Name = "GetProblem")]
+    public ActionResult<Problem> Get(string id)
+    {
+        var problem = _problemService.Get(id);
+
+        if (problem == null)
         {
-            _problemService = problemService;
+            return NotFound();
         }
 
-        [HttpGet]
-        public ActionResult<List<Problem>> Get() => _problemService.Get();
+        return problem;
+    }
 
-        [HttpGet("{id}", Name = "GetProblem")]
-        public ActionResult<Problem> Get(string id)
+    [HttpPost]
+    public ActionResult<Problem> Create(Problem problem)
+    {
+        _problemService.Create(problem);
+        return CreatedAtRoute("GetProblem", new { id = problem?.Id?.ToString() }, problem);
+    }
+
+    [HttpPut]
+    public ActionResult<Problem> CreateOrUpdate(Problem problem)
+    {
+        _problemService.CreateOrUpdate(problem);
+        return CreatedAtRoute("GetProblem", new { id = problem?.Id?.ToString() }, problem);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(string id, Problem problemIn)
+    {
+        var problem = _problemService.Get(id);
+
+        if (problem == null)
         {
-            var problem = _problemService.Get(id);
-
-            if (problem == null)
-            {
-                return NotFound();
-            }
-
-            return problem;
+            return NotFound();
         }
 
-        [HttpPost]
-        public ActionResult<Problem> Create(Problem problem)
+        _problemService.Update(id, problemIn);
+
+        return Ok(_problemService.Get(id));
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(string id)
+    {
+        var problem = _problemService.Get(id);
+
+        if (problem?.Id is null || _problemService.Exists(id))
         {
-            _problemService.Create(problem);
-            return CreatedAtRoute("GetProblem", new { id = problem?.Id?.ToString() }, problem);
-        }
-
-        [HttpPut]
-        public ActionResult<Problem> CreateOrUpdate(Problem problem)
-        {
-            _problemService.CreateOrUpdate(problem);
-            return CreatedAtRoute("GetProblem", new { id = problem?.Id?.ToString() }, problem);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(string id, Problem problemIn)
-        {
-            var problem = _problemService.Get(id);
-
-            if (problem == null)
-            {
-                return NotFound();
-            }
-
-            _problemService.Update(id, problemIn);
-
-            return Ok(_problemService.Get(id));
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            var problem = _problemService.Get(id);
-
-            if (problem?.Id is null || _problemService.Exists(id))
-            {
-                return NotFound();
-
-            }
-            _problemService.Remove(problem.Id);
-            return NoContent();
+            return NotFound();
 
         }
+        _problemService.Remove(problem.Id);
+        return NoContent();
+
     }
 }

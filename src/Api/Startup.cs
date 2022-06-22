@@ -15,6 +15,13 @@ namespace Api
         public void ConfigureServices(
             IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("LocalPolicy", builder =>
+            {
+                builder.WithOrigins(new[] { "http://localhost:3000", "http://localhost:3006" })
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.RegisterServices(Configuration);
         }
 
@@ -22,13 +29,14 @@ namespace Api
             IApplicationBuilder app,
             IWebHostEnvironment env)
         {
-            
+
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCors("LocalPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
