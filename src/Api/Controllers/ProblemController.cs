@@ -64,15 +64,13 @@ public class ProblemController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(string id)
     {
-        var problem = _problemService.Get(id);
-
-        if (problem?.Id is null || _problemService.Exists(id))
+        if (!_problemService.Exists(id))
         {
             return NotFound();
 
         }
-        _problemService.Remove(problem.Id);
+        _problemService.Remove(id);
+        
         return NoContent();
-
     }
 }

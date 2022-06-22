@@ -64,12 +64,11 @@ public class ContestController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(string id)
     {
-        var contest = _contestService.Get(id);
-        if (!_contestService.Exists(id) || contest?.Id is null)
+        if (!_contestService.Exists(id))
         {
             return NotFound();
         }
-        _contestService.Remove(contest.Id);
+        _contestService.Remove(id);
 
         return NoContent();
     }
