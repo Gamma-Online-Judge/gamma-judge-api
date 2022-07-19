@@ -25,31 +25,12 @@ dotnet restore
 dotnet dotnet run --project src/Api/Api.csproj
 ```
 
-### Utilizando docker
+### Utilizando docker compose
 
 Também é possível rodar a aplicação utilizando o docker sem a necessidade de instalar o cli na máquina.
 
-Primeiro basta realizar o build da imagem apontando o container para alguma tag 
+Primeiro basta realizar o build e o run
 
 ```bash
-docker build . -t gamma-judge
-```
-
-Logo após para executar o projeto basta executar o container utilizando as variáveis de amiente *AWS_ACCESS_KEY_ID* e *AWS_SECRET_ACCESS_KEY*
-
-```bash
-docker run \
-    -p 5138:5138 \
-    -e AWS_ACCESS_KEY_ID=*** \
-    -e AWS_SECRET_ACCESS_KEY=*** \
-    gamma-judge
-```
-
-Também é possível executar utilizando a configuração do arquiv *.env* executando o comando 
-
-```bash
-docker run \
-    -p 5138:5138 \
-    --env-file .env \
-    gamma-judge
+docker-compose up --build
 ```
