@@ -1,8 +1,34 @@
-version: "3"
-services: 
+version: "3.1"
+services:
   api:
+    restart: always
     build: .
-    ports: 
+    ports:
       - 5000:80
     volumes:
       - ~/.aws/:/root/.aws:ro
+    depends_on:
+      - "mongo"
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ADMIN_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ADMIN_PASSWORD}
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ADMIN_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ADMIN_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_ADMIN_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_ADMIN_PASSWORD}
