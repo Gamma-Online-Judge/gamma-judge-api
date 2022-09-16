@@ -3,7 +3,7 @@ if [ -z "$tag" ]; then
   echo "Usage: $0 <tag>"
   exit 1
 fi
-region=sa-east-1
+region=us-east-1
 aws_account_id=459427504023
 docker_image_name=gamma-judge-api
 aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_account_id.dkr.ecr.$region.amazonaws.com
