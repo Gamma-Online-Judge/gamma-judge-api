@@ -19,6 +19,7 @@ public class Problem
     public List<SampleInput> SampleInputs { get; set; } = new List<SampleInput>();
     public string Input { get; set; } = "";
     public string Output { get; set; } = "";
+    public string Tutorial { get; set; } = "";
 }
 
 public class SampleInput
