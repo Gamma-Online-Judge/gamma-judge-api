@@ -21,9 +21,13 @@ public class ContestController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Contest>> Get()
+    public ActionResult<List<Contest>> QueryContests(
+        [FromQuery] string? name,
+        [FromQuery] int? limit,
+        [FromQuery] int? skip
+    )
     {
-        var contests = _contestService.Get();
+        var contests = _contestService.QueryByName(name ?? "", limit ?? 10, skip ?? 0);
         return Ok(contests.Select(BuildContestResponse).ToList());
     }
 

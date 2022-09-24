@@ -60,4 +60,11 @@ public class ContestService
 
     public void Remove(string id) =>
         _contests.DeleteMany(contest => contest.CustomId == id);
+
+    public List<Contest> QueryByName(string name = "", int limit = 10, int skip = 0){
+        return _contests.Find(contest => contest.Name.ToLower().Contains(name.ToLower()))
+            .Limit(limit)
+            .Skip(skip)
+            .ToList();
+    }
 }
