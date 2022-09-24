@@ -57,4 +57,11 @@ public class ProblemService
 
     public void Remove(string id) =>
         _problems.DeleteOne(problem => problem.CustomId == id);
+
+    public List<Problem> QueryByTitle(string title = "", int limit = 10, int skip = 0){
+        return _problems.Find(problem => problem.Title.ToLower().Contains(title.ToLower()))
+            .Limit(limit)
+            .Skip(skip)
+            .ToList();
+    }
 }

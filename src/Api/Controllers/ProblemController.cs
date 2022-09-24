@@ -21,10 +21,15 @@ public class ProblemController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Problem>> QueryProblems() {
-        var problems = _problemService.Get();
+    public ActionResult<List<Problem>> QueryProblems(
+        [FromQuery] string? title,
+        [FromQuery] int? limit,
+        [FromQuery] int? skip
+     )
+    {
+        var problems = _problemService.QueryByTitle(title ?? "", limit ?? 10, skip ?? 0);
         return Ok(problems.Select(BuildProblemResponse).ToList());
-    } 
+    }
 
     [HttpGet("{id}", Name = "GetProblem")]
     public ActionResult<Problem> Get(string id)
@@ -77,11 +82,12 @@ public class ProblemController : ControllerBase
 
         }
         _problemService.Remove(id);
-        
+
         return NoContent();
     }
 
-    public ProblemResponse BuildProblemResponse(Problem problem){
+    public ProblemResponse BuildProblemResponse(Problem problem)
+    {
         var contest = problem.ContestId is null ? null : _contestService.Get(problem.ContestId);
         return new ProblemResponse(problem, contest);
     }
