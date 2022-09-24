@@ -20,6 +20,7 @@ public class Problem
     public string Input { get; set; } = "";
     public string Output { get; set; } = "";
     public string Tutorial { get; set; } = "";
+    public string Notes { get; set; } = "";
 }
 
 public class SampleInput

@@ -1,3 +1,4 @@
+using Api.Models;
 using Infrastructure.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,15 +10,21 @@ namespace BooksApi.Controllers;
 public class ProblemController : ControllerBase
 {
     private readonly ProblemService _problemService;
+    private readonly ContestService _contestService;
 
     public ProblemController(
-        ProblemService problemService)
+        ProblemService problemService,
+        ContestService contestService)
     {
         _problemService = problemService;
+        _contestService = contestService;
     }
 
     [HttpGet]
-    public ActionResult<List<Problem>> Get() => _problemService.Get();
+    public ActionResult<List<Problem>> QueryProblems() {
+        var problems = _problemService.Get();
+        return Ok(problems.Select(BuildProblemResponse).ToList());
+    } 
 
     [HttpGet("{id}", Name = "GetProblem")]
     public ActionResult<Problem> Get(string id)
@@ -29,7 +36,7 @@ public class ProblemController : ControllerBase
             return NotFound();
         }
 
-        return problem;
+        return Ok(BuildProblemResponse(problem));
     }
 
     [HttpPost]
@@ -58,7 +65,7 @@ public class ProblemController : ControllerBase
 
         _problemService.Update(id, problemIn);
 
-        return Ok(_problemService.Get(id));
+        return Ok(BuildProblemResponse(_problemService.Get(id)));
     }
 
     [HttpDelete("{id}")]
@@ -72,5 +79,10 @@ public class ProblemController : ControllerBase
         _problemService.Remove(id);
         
         return NoContent();
+    }
+
+    public ProblemResponse BuildProblemResponse(Problem problem){
+        var contest = problem.ContestId is null ? null : _contestService.Get(problem.ContestId);
+        return new ProblemResponse(problem, contest);
     }
 }
