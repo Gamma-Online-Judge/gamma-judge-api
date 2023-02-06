@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Workers;
 
@@ -29,6 +32,25 @@ namespace Api
             });
 
             services.RegisterServices(Configuration);
+            var key = Encoding.ASCII.GetBytes(Infrastructure.Settings.TokenSettings.Secret);
+            Console.WriteLine(key);
+            
+            services.AddAuthentication(x => 
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; 
+            })
+            .AddJwtBearer(x => {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };      
+            });
         }
 
         public void Configure(
@@ -46,7 +68,10 @@ namespace Api
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseCors("LocalPolicy");
             app.UseEndpoints(endpoints =>
             {

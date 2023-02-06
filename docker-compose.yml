@@ -15,9 +15,13 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
 
   mongo:
-    image: mongo
+    image: mongo:6
     container_name: mongo
     restart: always
+    volumes:
+      - './data:/data/db'
+    ports:
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ADMIN_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ADMIN_PASSWORD}

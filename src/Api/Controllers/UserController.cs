@@ -1,6 +1,7 @@
 using Infrastructure.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Api.Models;
 
 namespace BooksApi.Controllers;
 
@@ -8,9 +9,37 @@ namespace BooksApi.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
+    private readonly UserService _userService;
+
+    public UserController(
+        UserService userService
+    )
+    {   
+        _userService = userService;
+    }
+
     [HttpGet]
-    public ActionResult<List<User>> GetAllUsers()
+    public ActionResult<List<UserResponse>> GetAllUsers()
     {
-        return Ok();
+        var users = _userService.Get();
+        var response = new List<UserResponse>();
+        foreach (var user in users)
+            response.Add(new UserResponse(user));
+
+        return response;
+    }
+
+    [HttpGet("{id}", Name = "GetUser")]
+    public ActionResult<UserResponse> GetUser(string id)
+    {
+        return new UserResponse(_userService.Get(id));
+    }
+
+    [HttpPost]
+    public ActionResult<UserResponse> CreateUser(User user)
+    {
+        Console.WriteLine(user.ToString());
+        _userService.Create(user);
+        return CreatedAtRoute("GetUser", new { id = user?.Id?.ToString() }, user);
     }
 }
