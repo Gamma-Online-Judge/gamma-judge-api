@@ -21,7 +21,7 @@ public class LoginController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginRequest usuarioRequest)
+    public IActionResult Authenticate([FromBody] LoginRequest usuarioRequest)
     {
         var usuario = _userService.Get(usuarioRequest.Username, usuarioRequest.Password);
 
@@ -32,10 +32,10 @@ public class LoginController : ControllerBase
 
         usuario.Password = "";
 
-        return new {
+        return Ok(new {
             usuario = usuario,
             token = token
-        };
+        });
     }
  
     [HttpGet]
