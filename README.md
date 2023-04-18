@@ -4,9 +4,16 @@ Projeto de uma API que recebe arquivos para serem julgados, consultar as submiss
 
 ## Como rodar 
 
+## Dependencias
+
+- Docker (Compose) - Se preferir rodar via docker
+- (AWS CLI)[https://docs.aws.amazon.com/pt_br/cli/latest/userguide/getting-started-install.html]
+- Dotnet
+
 ### Configuração 
 
-Para executar o sistema é preciso configurar as variáveis de ambiente *AWS_ACCESS_KEY_ID* e *AWS_SECRET_ACCESS_KEY* que são utilizadas para acessar a conta AWS contendo as filas sqs e o bucket S3, para configurar basta executar o comando
+Depois de baixar o AWS CLI, rode o comando `aws configure` para configurar as credenciais de acesso ao S3 e o SQS.
+Para executar o sistema é preciso configurar as variáveis de ambiente *AWS_ACCESS_KEY_ID* e *AWS_SECRET_ACCESS_KEY* que são utilizadas para acessar a conta AWS contendo as filas sqs e o bucket S3, para configurar basta executar o comando.
 
 ```bash
 export AWS_ACCESS_KEY_ID=***
