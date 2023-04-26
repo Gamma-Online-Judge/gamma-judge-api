@@ -1,6 +1,7 @@
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers;
 
@@ -17,6 +18,7 @@ public class SubmissionController : ControllerBase
 
     [HttpGet]
     [Route("")]
+    [Authorize]
 
     public IActionResult GetSubmissions()
     {
@@ -24,6 +26,7 @@ public class SubmissionController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [Route("")]
 
     public async Task<IActionResult> PostSubmission(

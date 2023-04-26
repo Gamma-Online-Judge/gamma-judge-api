@@ -1,9 +1,6 @@
-using System.Net.Security;
 using Infrastructure.Services;
-using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Api.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BooksApi.Controllers;
 
@@ -33,12 +30,8 @@ public class LoginController : ControllerBase
         usuario.Password = "";
 
         return Ok(new {
-            usuario = usuario,
+            user = new UserResponse(usuario),
             token = token
         });
     }
- 
-    [HttpGet]
-    [Authorize]
-    public async Task<ActionResult<dynamic>> Get() => "Autenticado";
 }

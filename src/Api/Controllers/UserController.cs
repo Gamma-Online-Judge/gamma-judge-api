@@ -2,6 +2,7 @@ using Infrastructure.Services;
 using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BooksApi.Controllers;
 
@@ -19,6 +20,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public ActionResult<List<UserResponse>> GetAllUsers()
     {
         var users = _userService.Get();
@@ -30,6 +32,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetUser")]
+    [Authorize]
     public ActionResult<UserResponse> GetUser(string id)
     {
         return new UserResponse(_userService.Get(id));
@@ -38,8 +41,6 @@ public class UserController : ControllerBase
     [HttpPost]
     public ActionResult<UserResponse> CreateUser(User user)
     {
-        Console.WriteLine(user.ToString());
-        _userService.Create(user);
-        return CreatedAtRoute("GetUser", new { id = user?.Id?.ToString() }, user);
+        return new UserResponse(_userService.Create(user));
     }
 }
