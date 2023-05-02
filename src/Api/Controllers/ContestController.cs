@@ -85,13 +85,15 @@ public class ContestController : ControllerBase
         return NoContent();
     }
 
-    public ProblemShortResponse BuildProblemShortResponse(Problem problem)
+    [ApiExplorerSettings(IgnoreApi = true)]
+    private ProblemShortResponse BuildProblemShortResponse(Problem problem)
     {
         var contest = problem.ContestId is null ? null : _contestService.Get(problem.ContestId);
         return new ProblemShortResponse(problem, contest);
     }
 
-    public ContestResponse BuildContestResponse(Contest contest)
+    [ApiExplorerSettings(IgnoreApi = true)]
+    private ContestResponse BuildContestResponse(Contest contest)
     {
         var problems = contest.Problems.Select(contestProblem => _problemService.Get(contestProblem.CustomId)).Select(BuildProblemShortResponse).ToList();
         return new ContestResponse(contest, problems);

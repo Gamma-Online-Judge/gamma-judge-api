@@ -86,6 +86,7 @@ public class ProblemController : ControllerBase
         return NoContent();
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     public ProblemResponse BuildProblemResponse(Problem problem)
     {
         var contest = problem.ContestId is null ? null : _contestService.Get(problem.ContestId);
