@@ -86,6 +86,36 @@ public class ProblemController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost]
+    [Route("test_secret/{id}")]
+    public async Task<IActionResult> PostSecretTestCase(
+        [FromForm] SecretTestRequest secretTest,
+        string id,
+        CancellationToken cancellationToken)
+    {
+        if (secretTest.Files is null)
+            return BadRequest("Did not receive a file to process.");
+        try{
+            var fileList = new List<Stream>();
+
+            foreach (var file in secretTest.Files)
+            {
+                if (file.ContentType != "text/plain")
+                    throw new NotSupportedException($"File type {file.ContentType} not supported, only text/plain");
+
+                fileList.Add(file.OpenReadStream());
+            }
+            var response = await _problemService.AddTestCases(fileList, id, cancellationToken);
+            return Ok(response);
+        }
+        catch (KeyNotFoundException e){
+            return NotFound(e.Message);
+        }
+        catch(Exception e) {
+            return BadRequest(e.Message);
+        }
+    }
+
     [ApiExplorerSettings(IgnoreApi = true)]
     public ProblemResponse BuildProblemResponse(Problem problem)
     {

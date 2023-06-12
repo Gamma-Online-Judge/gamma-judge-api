@@ -3,19 +3,25 @@ using Infrastructure.Exceptions;
 using Infrastructure.Settings;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Amazon.S3;
 
 namespace Infrastructure.Services;
 
 public class ProblemService
 {
     private readonly IMongoCollection<Problem> _problems;
+    private readonly IAmazonS3 _s3Client;
 
-    public ProblemService(IJudgeDatabaseSettings settings)
+    public ProblemService(
+        IJudgeDatabaseSettings settings,
+        IAmazonS3 s3Client
+    )
     {
         var client = new MongoClient(settings.ConnectionString);
         var database = client.GetDatabase(settings.DatabaseName);
 
         _problems = database.GetCollection<Problem>(settings.ProblemsCollectionName);
+        _s3Client = s3Client;
     }
 
     public bool Exists(string? id) =>
@@ -63,5 +69,27 @@ public class ProblemService
             .Limit(limit)
             .Skip(skip)
             .ToList();
+    }
+
+    public async Task<List<SecretTestInput>> AddTestCases(List<Stream> Files, string ProblemId, CancellationToken cancellationToken)
+    { 
+        var problem = this.Get(ProblemId);
+
+        if (problem == null)
+            throw new KeyNotFoundException($"Problem with id {ProblemId} not found");
+        
+        foreach (var File in Files) 
+        {
+            var secretTest = new SecretTestInput();
+            secretTest.Id = ObjectId.GenerateNewId().ToString();
+            secretTest.Filename = $"{Contraints.ProblemsFolder}/{ProblemId}/{secretTest.Id}.txt";
+            await _s3Client.UploadObjectFromStreamAsync(Contraints.S3Bucket, secretTest.Filename, File, null, cancellationToken);
+
+            problem.SecretTests.Add(secretTest);
+        }
+
+        this.Update(ProblemId, problem);
+
+        return problem.SecretTests;
     }
 }

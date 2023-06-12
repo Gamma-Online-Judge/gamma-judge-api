@@ -16,7 +16,7 @@ public class Problem
     public string? ContestId { get; set; }
     public List<SampleInput> SampleInputs { get; set; } = new List<SampleInput>();
     public SampleLanguageInput Pt_BR { get; set; } = new SampleLanguageInput();
-
+    public List<SecretTestInput> SecretTests { get; set; } = new List<SecretTestInput>();
 }
 
 public class SampleInput
@@ -33,4 +33,12 @@ public class SampleLanguageInput
     public string Output { get; set; } = "";
     public string Tutorial { get; set; } = "";
     public string Notes { get; set; } = "";
+}
+
+public class SecretTestInput
+{
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id {get; set;} = "";
+    public string Filename {get; set;} = "";
 }
