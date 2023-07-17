@@ -4,13 +4,12 @@ services:
   api:
     restart: always
     build: 
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
       context: .
     ports:
       - 5138:80
     volumes:
       - ~/.aws/:/root/.aws:ro
-    network_mode: 'host'
     depends_on:
       - "mongo"
     environment:
