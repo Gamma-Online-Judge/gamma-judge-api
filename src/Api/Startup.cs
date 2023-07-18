@@ -21,7 +21,7 @@ namespace Api
         {
             services.AddCors(o => o.AddPolicy("LocalPolicy", builder =>
             {
-                builder.WithOrigins(new[] { "http://localhost:3000", "http://localhost:3006", "https://master.d1sk06otwbnk27.amplifyapp.com", "http://atnca2031.atena.io:3001", "http://atnca2031.atena.io:3006" })
+                builder.WithOrigins(new[] { "http://localhost:3000", "http://localhost:3006", "https://master.d1sk06otwbnk27.amplifyapp.com", "https://admin.gammajudge.online", "https://gammajudge.online" })
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
